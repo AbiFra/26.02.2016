@@ -1,0 +1,51 @@
+
+library(foreign)
+
+require(foreign)
+
+baseine<- data.frame(read.dbf ("C:\\Users\\SALA-C27\\Downloads\\sdemt215\\sdemt215.dbf"))
+##Metodo 1
+baseine$CLASE2.1[as.numeric(baseine$CLASE2)>=0 & as.numeric(baseine$CLASE2)<=2] <- 1 
+baseine$CLASE2.1[as.numeric(baseine$CLASE2)>=3 & as.numeric(baseine$CLASE2)<=4] <- 2 
+#detache(baseine)
+
+##Metodo 2
+attach(baseine)
+baseine$CLASE2.2<-ifelse(as.numeric(CLASE2) >= 1 & as.numeric(CLASE2)<=2,1, ifelse(as.numeric(CLASE2) >= 3 & as.numeric(CLASE2)<=3,2, 3))
+detach(baseine) 
+
+
+
+#4.1.1 Comparacion de los tres metodos
+install.packages("questionr")
+require (questionr)
+table(aseine$CLASE2.2
+table(baseine$CLASE2.2)
+
+
+########################### EJERCICIO RECODIFICAR VARIABLE EDAD#########################
+### 0 A 14= 1 NIÑ@S, 15 A 29=  2 JOVENES, 30 A 59= 3 ADULTOS , 60 A 97 = 4 ADULTOS MAYORES , 98Y 99= 5 NO ESPECIFICADO
+#### POR LOS DOS METODOS.... 
+### DESPUES ETIQUETAN LOS GRUPOS (SI DA TIEMPO))
+#### COMPARAR METODOS#############
+attach(baseine)
+baseine$EDA.1[as.numeric(baseine$EDA)>=1 & as.numeric(baseine$EDA)<=15] <- 1 
+baseine$EDA.1[as.numeric(baseine$EDA)>=16 & as.numeric(baseine$EDA)<=30] <- 2
+baseine$EDA.1[as.numeric(baseine$EDA)>=31 & as.numeric(baseine$EDA)<=60] <- 3
+baseine$EDA.1[as.numeric(baseine$EDA)>=61 & as.numeric(baseine$EDA)<=98] <- 4
+baseine$EDA.1[as.numeric(baseine$EDA)>=99 & as.numeric(baseine$EDA)<=100] <- 5 
+detach(baseine)
+table((baseine$EDA.1))
+
+##Metodo 2
+attach(baseine)
+baseine$EDA.2<-ifelse(as.numeric(EDA) >= 1 & as.numeric(EDA)<=15,1,ifelse(as.numeric(EDA) >= 16 & as.numeric(EDA)<=30,2,ifelse(as.numeric(EDA) >= 31 & as.numeric(EDA)<=60,3,ifelse(as.numeric(EDA) >= 61 & as.numeric(EDA)<=98,4,5))))
+detach(baseine)
+table((baseine$EDA.2))
+
+###Etiquetar
+baseine$EDA.1<-ordered(baseine$EDA.1, levels=c("1","2","3","4","5"), labels =c("NIÑ@S","JOVENES","ADULTOS","ADULTOS MAYORES","NO ESPECIFICADO"))
+table(baseine$EDA.1)
+baseine$EDA.2<-ordered(baseine$EDA.2, levels=c("1","2","3","4","5"), labels =c("NIÑ@S","JOVENES","ADULTOS","ADULTOS MAYORES","NO ESPECIFICADO"))
+table(baseine$EDA.2)
+
